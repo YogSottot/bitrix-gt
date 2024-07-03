@@ -167,13 +167,13 @@ installPkg(){
   apt update
 	export DEBIAN_FRONTEND="noninteractive"
 	debconf-set-selections <<< 'exim4-config exim4/dc_eximconfig_configtype select internet site; mail is sent and received directly using SMTP'
-  apt install -y  php8.0 php8.0-cli \
-                  php8.0-common php8.0-gd php8.0-ldap \
-                  php8.0-mbstring php8.0-mysql \
-                  php8.0-opcache \
-                  php-pear php8.0-apcu php-geoip \
-                  php8.0-mcrypt php8.0-memcache \
-                  php8.0-zip php8.0-pspell php8.0-xml \
+  apt install -y  php8.2 php8.2-cli \
+                  php8.2-common php8.2-gd php8.2-ldap \
+                  php8.2-mbstring php8.2-mysql \
+                  php8.2-opcache \
+                  php-pear php8.2-apcu php-geoip \
+                  php8.2-mcrypt php8.2-memcache \
+                  php8.2-zip php8.2-pspell php8.2-xml \
                   apache2 nginx mariadb-server mariadb-common \
                   nodejs npm redis \
                   exim4 exim4-config
@@ -186,8 +186,8 @@ dplApache(){
 PrivateTmp=false
 EOF
 		systemctl daemon-reload
-	  ln -sf /etc/php/8.0/mods-available/zbx-bitrix.ini  /etc/php/8.0/apache2/conf.d/99-bitrix.ini
-    ln -sf /etc/php/8.0/mods-available/zbx-bitrix.ini  /etc/php/8.0/cli/conf.d/99-bitrix.ini
+	  ln -sf /etc/php/8.2/mods-available/zbx-bitrix.ini  /etc/php/8.2/apache2/conf.d/99-bitrix.ini
+    ln -sf /etc/php/8.2/mods-available/zbx-bitrix.ini  /etc/php/8.2/cli/conf.d/99-bitrix.ini
     a2dismod --force autoindex
     a2enmod rewrite
 		systemctl stop apache2
@@ -297,7 +297,7 @@ deployConfig() {
 	wget -q 'https://dev.1c-bitrix.ru/docs/chm_files/debian.zip'
   unzip debian.zip && rm debian.zip
   rsync -a --exclude=php.d ./debian/ /etc/
-  rsync -a ./debian/php.d/ /etc/php/8.0/mods-available/
+  rsync -a ./debian/php.d/ /etc/php/8.2/mods-available/
   rsync -a ./debian/php.d/ /etc/php/7.4/mods-available/
 	mkdir -p /var/www/html/bx-site
 
