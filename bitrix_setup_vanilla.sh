@@ -1,5 +1,4 @@
-#!/usr/bin/env bash
-set -eo pipefail
+#!/bin/sh
 #
 # metadata_begin
 # recipe: Bitrix Vanilla
@@ -11,6 +10,8 @@ set -eo pipefail
 
 # use
 # bash <(curl -sL https://raw.githubusercontent.com/YogSottot/bitrix-gt/master/bitrix_setup_vanilla.sh)
+
+cat > /root/run.sh <<\END
 
 set -x
 LOG_PIPE=/tmp/log.pipe
@@ -161,10 +162,8 @@ installPkg(){
 	apt update
 	apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 unzip rsync nftables pwgen make build-essential wget curl
 
-	echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | \
-	tee /etc/apt/sources.list.d/sury-php.list
-  wget -qO - https://packages.sury.org/php/apt.gpg | \
-	apt-key add -
+	echo "deb [signed-by=/etc/apt/trusted.gpg.d/suru.gpg] https://ftp.mpi-inf.mpg.de/mirrors/linux/mirror/deb.sury.org/repositories/php $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
+  curl -s -o /etc/apt/trusted.gpg.d/suru.gpg https://packages.sury.org/php/apt.gpg
   apt update
 	export DEBIAN_FRONTEND="noninteractive"
 	debconf-set-selections <<< 'exim4-config exim4/dc_eximconfig_configtype select internet site; mail is sent and received directly using SMTP'
@@ -334,3 +333,5 @@ ip=$(wget -qO- "https://ipinfo.io/ip")
 curl -s "http://${ip}/bitrixsetup.php"|grep 'bitrixsetup' >/dev/null || exit 1
 
 END
+
+bash /root/run.sh

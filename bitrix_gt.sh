@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -eo pipefail
 #
 # metadata_begin
 # recipe: Bitrix GT
@@ -12,6 +11,8 @@ set -eo pipefail
 
 # use
 # bash <(curl -sL https://raw.githubusercontent.com/YogSottot/bitrix-gt/master/bitrix_gt.sh)
+
+cat > /root/run.sh <<\END
 
 unset http_proxy
 set -x
@@ -294,7 +295,7 @@ then
 	echo 'd /var/run/mariadb 0775 mysql -' > /etc/tmpfiles.d/mariadb.conf
 	[ $release -eq 7 ] && (firewall-cmd --zone=public --add-port=80/tcp --add-port=443/tcp --add-port=21/tcp --permanent && firewall-cmd --reload) || (iptables -I INPUT 1 -p tcp -m multiport --dports 21,80,443 -j ACCEPT && iptables-save > /etc/sysconfig/iptables)
 	cd /var/www/html
-	#wget -qO- http://rep.fvds.ru/cms/bitrixstable.tgz|tar -zxp
+	# wget -qO- http://rep.fvds.ru/cms/bitrixstable.tgz|tar -zxp
 	wget -qO- https://raw.githubusercontent.com/YogSottot/bitrix-gt/master/bitrixstable.tgz|tar -zxp
 	mv -f ./nginx/* /etc/nginx/
 	rm -rf /etc/httpd/{conf,conf.d,conf.modules.d}
@@ -350,7 +351,7 @@ then
 	echo -e "[client]\npassword=${mypwd}" > /root/.my.cnf
 
 	wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-	echo "deb https://packages.sury.org/php/ ${release} main" > /etc/apt/sources.list.d/php8.2.list
+	echo "deb https://ftp.mpi-inf.mpg.de/mirrors/linux/mirror/deb.sury.org/repositories/php ${release} main" > /etc/apt/sources.list.d/php8.2.list
 	apt update
 	apt install -y php8.2-opcache php8.2-mysqli php8.2-fpm php8.2-gd php8.2-curl php8.2-xml php8.2-mbstring mariadb-server mysql-common mariadb-client nginx catdoc exim4 exim4-config apache2 libapache2-mod-rpaf nftables
 	sed -i "s/dc_eximconfig_configtype='local'/dc_eximconfig_configtype='internet'/" /etc/exim4/update-exim4.conf.conf && dpkg-reconfigure --frontend noninteractive exim4-config
@@ -405,4 +406,10 @@ then
 fi
 
 
+ip=$(wget -qO- "https://ipinfo.io/ip")
+echo 'gt smart' > /env
+curl -s "http://${ip}/"|grep 'bitrixsetup' >/dev/null || exit 1
 
+END
+
+bash /root/run.sh
