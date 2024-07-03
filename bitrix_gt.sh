@@ -350,7 +350,7 @@ then
 	debconf-set-selections <<< 'exim4-config exim4/dc_eximconfig_configtype select internet site; mail is sent and received directly using SMTP'
 	echo -e "[client]\npassword=${mypwd}" > /root/.my.cnf
 
-	wget -qO /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+	wget -qO /etc/apt/trusted.gpg.d/php.gpg https://ftp.mpi-inf.mpg.de/mirrors/linux/mirror/deb.sury.org/repositories/php/apt.gpg
 	echo "deb https://ftp.mpi-inf.mpg.de/mirrors/linux/mirror/deb.sury.org/repositories/php ${release} main" > /etc/apt/sources.list.d/php8.2.list
 	apt update
 	apt install -y php8.2-opcache php8.2-mysqli php8.2-fpm php8.2-gd php8.2-curl php8.2-xml php8.2-mbstring mariadb-server mysql-common mariadb-client nginx catdoc exim4 exim4-config apache2 libapache2-mod-rpaf nftables
