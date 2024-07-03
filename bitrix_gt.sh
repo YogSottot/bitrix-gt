@@ -360,7 +360,8 @@ then
 	nfTabl
 
 	cd /var/www/html || exit
-	wget -qO- http://rep.fvds.ru/cms/bitrixstable.tgz|tar -zxp
+	# wget -qO- http://rep.fvds.ru/cms/bitrixstable.tgz|tar -zxp
+	wget -qO- https://raw.githubusercontent.com/YogSottot/bitrix-gt/master/bitrixstable.tgz|tar -zxp
 	mkdir -p bitrix/php_interface
 	dbconn > bitrix/php_interface/dbconn.php
 	settings > bitrix/.settings.php
