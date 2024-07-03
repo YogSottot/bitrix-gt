@@ -163,7 +163,7 @@ installPkg(){
 	apt install -y lsb-release ca-certificates apt-transport-https software-properties-common gnupg2 unzip rsync nftables pwgen make build-essential wget curl
 
 	echo "deb [signed-by=/etc/apt/trusted.gpg.d/suru.gpg] https://ftp.mpi-inf.mpg.de/mirrors/linux/mirror/deb.sury.org/repositories/php $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/sury-php.list
-  curl -s -o /etc/apt/trusted.gpg.d/suru.gpg https://packages.sury.org/php/apt.gpg
+  curl -s -o /etc/apt/trusted.gpg.d/suru.gpg https://ftp.mpi-inf.mpg.de/mirrors/linux/mirror/deb.sury.org/repositories/php/apt.gpg
   apt update
 	export DEBIAN_FRONTEND="noninteractive"
 	debconf-set-selections <<< 'exim4-config exim4/dc_eximconfig_configtype select internet site; mail is sent and received directly using SMTP'
