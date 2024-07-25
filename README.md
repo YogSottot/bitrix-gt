@@ -14,3 +14,5 @@ bitrix-gt from firstvds
 https://github.com/Wladimir-N/ispconfig  
 
 https://gitlab.com/bitrix-docker/server  
+
+https://github.com/EduardRe/DebianLikeBitrixVM  
